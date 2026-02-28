@@ -6,24 +6,23 @@ function HomeScreen({ onStart, setTopics }) {
   const handleStart = async () => {
     setLoading(true)
     try {
-      // TODO: Llamar a /api/generate-topics
-      // Por ahora, temas de ejemplo
-      const exampleTopics = [
-        "Los que responden con audio de 4 minutos",
-        "El looksmaxxing",
-        "Tener 47 tabs abiertos",
-        "Los therians",
-        "Ver series con subtítulos en inglés",
-        "El bed rotting",
-        "Subir stories de lluvia en Santiago",
-        "Responder 'ya' con punto",
-        "El FYP de TikTok",
-        "Los tiktokers chilenos en inglés"
-      ]
-      setTopics(exampleTopics)
+      const response = await fetch('/api/generate-topics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Error al generar temas')
+      }
+
+      const data = await response.json()
+      setTopics(data.topics)
       onStart()
     } catch (error) {
       console.error('Error al generar temas:', error)
+      alert('Error al generar temas. Por favor intenta de nuevo.')
     } finally {
       setLoading(false)
     }

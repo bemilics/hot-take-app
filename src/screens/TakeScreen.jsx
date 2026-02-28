@@ -23,16 +23,28 @@ function TakeScreen({ topics, onComplete }) {
     setError(null)
 
     try {
-      // TODO: Llamar a /api/analyze
-      // Por ahora, perfil de ejemplo
-      const exampleProfile = {
-        archetype_name: "Observador Cansado con Criterio Muy Fino",
-        username: "@criterio.exe",
-        bio: "tiene estándares altos para todo excepto para sí mismo • entiende el caos pero no lo excusa • siempre tiene razón, nunca lo dice",
-        niche: "lurker con opiniones devastadoras en privado"
+      // Construir el payload con los temas y respuestas
+      const payload = {
+        answers: topics.map((topic, index) => ({
+          topic: topic,
+          word: answers[index]
+        }))
       }
 
-      onComplete(exampleProfile)
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      })
+
+      if (!response.ok) {
+        throw new Error('Error al analizar respuestas')
+      }
+
+      const profile = await response.json()
+      onComplete(profile)
     } catch (err) {
       setError('Error al analizar tus respuestas. Intenta de nuevo.')
       console.error(err)
