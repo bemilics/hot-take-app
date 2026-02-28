@@ -60,10 +60,15 @@ username:
 bio:
 - Máximo 130 caracteres
 - 2–3 frases cortas separadas por •
-- Español chileno moderado con guiños locales (se entiende en LatAm)
-- Tono irónico pero nunca cruel
-- GÉNERO NEUTRO: usar segunda persona ("tiene", "sabe", "entiende") o impersonal
-- Basada en INFERENCIAS, nunca en los temas ni las palabras del usuario
+- TONO FIRST-PERSON: debe sonar como si el usuario la escribiera sobre sí mismo
+  • En vez de "tiene estándares altos" → "estándares altos para todo menos para mi"
+  • En vez de "sabe reconocer poses" → "detecto poses a 3km de distancia"
+  • En vez de "entiende de nicho" → "si es mainstream ya no me interesa"
+- Español chileno casual, como hablaría en WhatsApp
+- GÉNERO NEUTRO pero personal: primera persona cuando sea posible, sino segunda persona informal
+- Puede ser irónico, sincero, pretencioso, vulnerable — lo que calce con la personalidad
+- NUNCA mencionar los temas ni repetir las palabras del input
+- La bio es una mini-declaración de identidad, no una descripción externa
 
 niche:
 - 3–6 palabras en ESPAÑOL que definen su nicho de internet
@@ -71,13 +76,44 @@ niche:
 - Bien: "detector de poses con criterio", "consumidor de nicho con estándares"
 - Mal: "anti-aesthetic discourse", "neurospicy self-awareness", "cringe compasses"
 
+posts:
+- Array de exactamente 3 objetos, cada uno con: { "content": "..." }
+- REGLA CRÍTICA — INFERENCIA OBLICUA:
+  • Los posts NO deben reflejar directamente los hot takes
+  • NO repitas las palabras ni los temas del input
+  • Infiere actitudes, valores, formas de pensar y exprésalas en contextos diferentes
+  • Ejemplo: si respondió "teatro" a therians → NO escribas "los therians son teatro"
+    En su lugar, escribe algo que revele escepticismo/distancia en otro contexto
+- VARIEDAD DE FORMATOS (implícita, sin labels):
+  • Tweet/thread: reflexión corta, puede usar emojis si calza con la personalidad
+  • Caption de IG: más visual/estético, podría ser frase corta + emoji o descripción irónica
+  • Comentario/reply: reacción a algo, más casual, puede tener typos intencionales
+  • DECIDE el formato según la personalidad, no uses el mismo tipo 3 veces
+- VARIEDAD DE TONO:
+  • Los posts pueden variar entre irónico, sincero, pretencioso, random, melancólico
+  • Según la personalidad inferida, algunos arquetipos son más sinceros, otros más distanciados
+  • No todos los posts tienen que ser irónicos — muestra diferentes facetas
+- ESPAÑOL CHILENO NATURAL:
+  • Escribe como escribiría realmente esa persona
+  • Pueden incluir "po", "ctm", "xd", "jsjsj", emojis, typos casuales SI calzan con la personalidad
+  • Un esteta_nicho escribirá distinto a un twittero_discourse
+- LÍMITES:
+  • Cada post: mínimo 15, máximo 180 caracteres
+  • Sin referencias políticas ni figuras públicas
+  • Sin mencionar los temas del cuestionario
+
 Sin referencias políticas. Sin figuras públicas. Responde ÚNICAMENTE con JSON válido.
 
 {
   "archetype_name": "...",
   "username": "@...",
   "bio": "...",
-  "niche": "..."
+  "niche": "...",
+  "posts": [
+    { "content": "..." },
+    { "content": "..." },
+    { "content": "..." }
+  ]
 }`
 
   const userMessage = answers
@@ -94,7 +130,7 @@ Sin referencias políticas. Sin figuras públicas. Responde ÚNICAMENTE con JSON
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
+        max_tokens: 800,
         system: systemPrompt,
         messages: [
           {

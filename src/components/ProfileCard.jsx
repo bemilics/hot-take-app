@@ -27,6 +27,21 @@ function ProfileCard({ profile }) {
           <span>🏷</span> {profile.niche}
         </div>
 
+        {profile.posts && profile.posts.length > 0 && (
+          <>
+            <div className="separator"></div>
+
+            <div className="posts-section">
+              <div className="posts-header">contenido inferido</div>
+              {profile.posts.map((post, index) => (
+                <div key={index} className="post-item">
+                  {post.content}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
         <div className="watermark">hot-take-app</div>
       </div>
     </div>
