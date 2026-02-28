@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/generate-topics.js": {
+      "maxDuration": 30
+    },
+    "api/analyze.js": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "ANTHROPIC_API_KEY": "@anthropic-api-key"
+  }
+}
