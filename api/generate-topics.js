@@ -42,7 +42,7 @@ REGLAS:
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 500,
         system: systemPrompt,
         messages: [
@@ -54,6 +54,12 @@ REGLAS:
       }),
     })
 
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error('API Error:', errorData)
+      throw new Error(`API Error: ${JSON.stringify(errorData)}`)
+    }
+
     const data = await response.json()
     const text = data.content[0].text
     const result = JSON.parse(text)
@@ -61,6 +67,6 @@ REGLAS:
     res.status(200).json(result)
   } catch (error) {
     console.error('Error:', error)
-    res.status(500).json({ error: 'Error al generar temas' })
+    res.status(500).json({ error: 'Error al generar temas', details: error.message })
   }
 }

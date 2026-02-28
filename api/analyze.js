@@ -93,7 +93,7 @@ Sin referencias políticas. Sin figuras públicas. Responde ÚNICAMENTE con JSON
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 500,
         system: systemPrompt,
         messages: [
@@ -105,6 +105,12 @@ Sin referencias políticas. Sin figuras públicas. Responde ÚNICAMENTE con JSON
       }),
     })
 
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error('API Error:', errorData)
+      throw new Error(`API Error: ${JSON.stringify(errorData)}`)
+    }
+
     const data = await response.json()
     const text = data.content[0].text
     const profile = JSON.parse(text)
@@ -112,6 +118,6 @@ Sin referencias políticas. Sin figuras públicas. Responde ÚNICAMENTE con JSON
     res.status(200).json(profile)
   } catch (error) {
     console.error('Error:', error)
-    res.status(500).json({ error: 'Error al analizar respuestas' })
+    res.status(500).json({ error: 'Error al analizar respuestas', details: error.message })
   }
 }
