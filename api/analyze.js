@@ -112,7 +112,11 @@ Sin referencias políticas. Sin figuras públicas. Responde ÚNICAMENTE con JSON
     }
 
     const data = await response.json()
-    const text = data.content[0].text
+    let text = data.content[0].text
+
+    // Limpiar markdown si existe (```json ... ```)
+    text = text.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim()
+
     const profile = JSON.parse(text)
 
     res.status(200).json(profile)
